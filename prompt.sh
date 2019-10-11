@@ -46,9 +46,9 @@ function set_git_branch {
   remote_pattern="Your branch is (.*) of "
   if [[ ${git_status} =~ ${remote_pattern} ]]; then
     if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
-      remote=" ↑"
+      remote=" →"
     else
-      remote=" ↓"
+      remote=" ←"
     fi
   else
     remote=""
@@ -56,7 +56,7 @@ function set_git_branch {
 
   diverge_pattern="Your branch and (.*) have diverged"
   if [[ ${git_status} =~ ${diverge_pattern} ]]; then
-    remote=" ↕"
+    remote=" ↔"
   fi
 
   # Get the name of the branch.
@@ -66,7 +66,7 @@ function set_git_branch {
   fi
   # Set the final branch string.
   # BRANCH="${state}(${branch})${remote}${COLOR_NONE} "
-  BRANCH="${state}(`parse_git_branch`)${remote}${COLOR_NONE}"
+  BRANCH=" ${state}(`parse_git_branch`)${remote}${COLOR_NONE}"
 }
 
 # Return the prompt symbol to use, colorized based on the return value of the previous command.
@@ -105,7 +105,7 @@ function set_bash_prompt () {
 
   # Set the bash prompt variable.
    # PS1="${PYTHON_VIRTUALENV}${debian_chroot:+($debian_chroot)}${LIGHT_GRAY}\u${WHITE}@${LIGHT_GRAY}\h\[\033[00m\]:${WHITE}\w\[\033[00m\] ${GREEN}${COLOR_NONE}$ "
-  PS1="${PYTHON_VIRTUALENV} ${LIGHT_GRAY}\w${COLOR_NONE} ${BRANCH} ${PROMPT_SYMBOL} "
+  PS1="${PYTHON_VIRTUALENV} ${LIGHT_GRAY}\w${COLOR_NONE}${BRANCH} ${PROMPT_SYMBOL} "
 }
 
 # Tell bash to execute this function just before displaying its prompt.
