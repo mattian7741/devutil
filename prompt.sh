@@ -1,5 +1,4 @@
 # !/bin/bash
-
 # The various escape codes that we can use to color our prompt.
 RED="\[\033[0;31m\]"
 YELLOW="\[\033[1;33m\]"
@@ -30,9 +29,9 @@ function parse_git_branch() {
 
 # Determine the branch/state information for this git repository.
 function set_git_branch {
+
   # Capture the output of the "git status" command.
   git_status="$(git status 2> /dev/null)"
-
   # Set color based on clean/staged/dirty.
   if [[ ${git_status} =~ "working tree clean" ]]; then
     state="${LIGHT_GREEN}"
@@ -43,7 +42,8 @@ function set_git_branch {
   fi
 
   # Set arrow icon based on status against remote.
-  remote_pattern="Your branch is (.*) of"
+
+  remote_pattern="Your branch is (.*) of "
   if [[ ${git_status} =~ ${remote_pattern} ]]; then
     if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
       remote="↑"
@@ -64,10 +64,9 @@ function set_git_branch {
   if [[ ${git_status} =~ ${branch_pattern} ]]; then
     branch=${BASH_REMATCH[1]}
   fi
-
   # Set the final branch string.
   # BRANCH="${state}(${branch})${remote}${COLOR_NONE} "
-  BRANCH="${state}(`parse_git_branch`)${remote}${COLOR_NONE}"
+  BRANCH="${state}(`parse_git_branch`) ${remote}${COLOR_NONE}"
 }
 
 # Return the prompt symbol to use, colorized based on the return value of the previous command.
@@ -110,4 +109,5 @@ function set_bash_prompt () {
 }
 
 # Tell bash to execute this function just before displaying its prompt.
+set_bash_prompt
 PROMPT_COMMAND=set_bash_prompt
