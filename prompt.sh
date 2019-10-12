@@ -29,11 +29,13 @@ function parse_git_branch() {
 
 # Determine the branch/state information for this git repository.
 function set_git_branch {
-
+  remote_pattern="Your branch is (.*) of "
   # Capture the output of the "git status" command.
   git_status="$(git status 2> /dev/null)"
   # Set color based on clean/staged/dirty.
-  if [[ ${git_status} =~ "working tree clean" ]]; then
+  if [[ ${git_status} =~ ${remote_pattern} ]]; then
+    state="${LIGHT_CYAN}"
+  elif [[ ${git_status} =~ "working tree clean" ]]; then
     state="${LIGHT_GREEN}"
   elif [[ ${git_status} =~ "Changes to be committed" ]]; then
     state="${YELLOW}"
@@ -42,8 +44,6 @@ function set_git_branch {
   fi
 
   # Set arrow icon based on status against remote.
-
-  remote_pattern="Your branch is (.*) of "
   if [[ ${git_status} =~ ${remote_pattern} ]]; then
     if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
       remote=" →"
