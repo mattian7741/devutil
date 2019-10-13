@@ -1,0 +1,9 @@
+# !/bin/bash
+
+rm -rf dist
+rm -rf .venv_pypi
+python3 -m venv .venv_pypi
+.venv_pypi/bin/python pypi.py sdist $1
+.venv_pypi/bin/pip install twine
+.venv_pypi/bin/twine upload dist/*
+
